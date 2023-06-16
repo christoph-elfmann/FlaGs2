@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib as mpl
 from matplotlib.pyplot import figure, tight_layout
-from collections import Counter 
+from collections import Counter
 
 
 usage= ''' Description:  Identify flanking genes and cluster them based on similarity and visualize the structure; Requirement= Python3, BioPython; tkinter ; Optional Requirement= ETE3. '''
@@ -56,7 +56,7 @@ parser.add_argument("-vb", "--verbose", action="store_true", help=" Use this opt
 args = parser.parse_args()
 parser.parse_args()
 
-print("\nStarting FlaGs2 version 1.1.5 \nPlease only run one instance of FlaGs2 at a time to avoid making more queries than NCBI’s limit.")
+print("\nStarting FlaGs2 version 1.1.5 \nPlease only run one instance of FlaGs2 at a time to avoid making more queries than NCBI's limit.")
 print('For more information, please check https://ncbiinsights.ncbi.nlm.nih.gov/2017/11/02/new-api-keys-for-the-e-utilities/ \n')
 print('Checking for RefSeq and Genbank summary files and downloading if needed ... \n')
 
@@ -1501,8 +1501,8 @@ with open(args.out_prefix+'_all.fasta', 'w') as all_fasta:
 	for seqids in sorted(seqDict):
 		if seqDict[seqids]!='--':
 			print('>'+desDict[seqids]+'\n'+seqDict[seqids], file=all_fasta)
-		
-		
+
+
 b=0
 with open (args.out_prefix+'_flankgene.fasta'+'_cluster_out', 'w') as fastaNew:
 	for seqids in sorted(seqDict):
@@ -1628,7 +1628,7 @@ if args.hmmdb:
 		hmmscan_cmd = "hmmscan -E 1e-10 --cpu %s -o %s_dom.txt --domtblout %s_dom_out.txt %s %s_all.fasta"%(round(core/3), args.out_prefix, args.out_prefix, args.hmmdb, args.out_prefix)
 	else:
 		hmmscan_cmd = "hmmscan -E 1e-10 -o %s_dom.txt --domtblout %s_dom_out.txt %s %s_all.fasta"%(args.out_prefix, args.out_prefix, args.hmmdb, args.out_prefix)
-	subprocess.run(hmmscan_cmd, shell=True) #runs hmmscan 
+	subprocess.run(hmmscan_cmd, shell=True) #runs hmmscan
 
 	#domain search ends
 	#domain dictionary for outdesc output
@@ -1652,8 +1652,8 @@ if args.hmmdb:
 				out_desc_out.write(line)
 				out_desc_out.write(''.join(dom_dict[split_line[1]]))
 			else:
-				out_desc_out.write(line)				
-	
+				out_desc_out.write(line)
+
 familyDict={} # Accession:Assigned family Number from Jackhammer
 with open(args.out_prefix+'_flankgene.fasta_cluster_out_'+iters+'_'+evthresh+'_clusters.tsv', 'r') as clusterIn:
 	for line in clusterIn:
@@ -1756,11 +1756,11 @@ if not args.tree_order:
 
 	mpl.rcParams['pdf.fonttype'] = 42
 	mpl.rcParams['ps.fonttype'] = 42
-	
+
 	# 1. Data File input
 	#data = pd.read_csv(args.out_prefix+'_operon.tsv', sep='\t', header=None, skiprows=None)  #NOTE: Using pandas here because queries number def is missing.
 	#df = pd.DataFrame(data)																				#Will be avoided in the FlaGs code where number queries is defined
-																										   #in preceeding code. 
+																										   #in preceeding code.
 	arrowList = []
 	domainList = []
 	accession_List = []
@@ -1768,14 +1768,14 @@ if not args.tree_order:
 	gene_end_list=[]
 	#y = df[0].nunique()/4.5
 
-	
 
-	
+
+
 	# 2. Drawing the plots
 	fig, ax = plt.subplots(1, 2, sharey = 'row', figsize=(x, y), gridspec_kw={'width_ratios': [5, 15]})
-	
-	
-	# 3. Operon (main) file input 
+
+
+	# 3. Operon (main) file input
 	main_file = open(args.out_prefix+'_operon.tsv','r').read()
 	eg1 = main_file.split("\n\n\n\n")
 	y_level_m = 0
@@ -1798,12 +1798,12 @@ if not args.tree_order:
 				gene_start_list.append(x_gene_start)
 				gene_end_list.append(x_gene_end)
 				# 3a. When genes are to small the arrow shape is distorted because the coordinates are too close to each other.
-				#	 This makes these genes longer to keep the shape of the arrow. 
+				#	 This makes these genes longer to keep the shape of the arrow.
 				if dx_gene_length < 100:
 					dx_gene_length = int(items1[1])*2.5
 				else:
 					dx_gene_length = int(items1[1])
-	
+
 				# 3b. Gene diretion and the pointing the arrow head in the correct direction
 				if gene_direction == '-':
 					x_gene_start = int(items1[6])
@@ -1813,31 +1813,31 @@ if not args.tree_order:
 					x_gene_start = int(items1[5])
 					x_gene_end = int(items1[6])
 					dx_gene_length = dx_gene_length
-	
-				# 3c. Drawing the genes as arrows. 
+
+				# 3c. Drawing the genes as arrows.
 				if abs(dx_gene_length) < 200:
-					arrowList.append(ax[1].arrow(x=x_gene_start, y=y_level_m*0.65, dx=dx_gene_length, dy=0, width=1.1, head_width=1.1, length_includes_head = True, head_length = abs(dx_gene_length)/2, facecolor = colorDict[dom1_name], edgecolor = outliner(colorDict[dom1_name]), alpha=1))               
+					arrowList.append(ax[1].arrow(x=x_gene_start, y=y_level_m*0.65, dx=dx_gene_length, dy=0, width=1.1, head_width=1.1, length_includes_head = True, head_length = abs(dx_gene_length)/2, facecolor = colorDict[dom1_name], edgecolor = outliner(colorDict[dom1_name]), alpha=1))
 				else:
 					arrowList.append(ax[1].arrow(x=x_gene_start, y=y_level_m*0.65, dx=dx_gene_length, dy=0, width=1.1, head_width=1.1, length_includes_head = True, head_length = 150, facecolor = colorDict[dom1_name], edgecolor = outliner(colorDict[dom1_name]), alpha=1))
-				
+
 				# 5. Adding the family number inside the gene/arrow
 				text_x = x_gene_start + (dx_gene_length/2)
-	 
+
 				if dom1_name != 0 and 'pseudogene_' not in id1 and 'RNA_' not in id1 and 'other' not in id1 and x_gene_start != 1:
 					ax[1].text(text_x, y_level_m*0.65-0.35, s = dom1_name, horizontalalignment='center', color = 'k', font = {'family' : 'sans-serif','size'   : 8})
 				else:
 					pass
-	
-				# 6. Adding the second plot (left-hand side) with the organism name and accesion nr etc. 
+
+				# 6. Adding the second plot (left-hand side) with the organism name and accesion nr etc.
 				ptnstats = entries1[0].split("\t")
 				org = ptnstats[0][:ptnstats[0].index('|')]+ptnstats[0][ptnstats[0].index('|'):].replace('_',' ')
 				ax[0].text(0.5, y_level_m*0.65-0.35, org, horizontalalignment='center', color = '#000000', font = {'family' : 'sans-serif','size':10})
 				ax[0].set_axis_off()
-				
+
 				row = row+1
-	
-	y_new = ((len(Counter(accession_List).keys()))*0.25)	  
-	x_new = (max(gene_end_list) - min(gene_start_list))/3000 + 10	 
+
+	y_new = ((len(Counter(accession_List).keys()))*0.25)
+	x_new = (max(gene_end_list) - min(gene_start_list))/3000 + 10
 	fig.set_figheight(y_new)
 	fig.set_figwidth(x_new)
 	#plt.tight_layout()
@@ -2019,11 +2019,11 @@ if args.tree and args.tree_order:  # Queries in postscript file will be presente
 
 	mpl.rcParams['pdf.fonttype'] = 42
 	mpl.rcParams['ps.fonttype'] = 42
-	
+
 	# 1. Data File input
 	#data = pd.read_csv(args.out_prefix+'_TreeOrder_operon.tsv', sep='\t', header=None, skiprows=None)  #NOTE: Using pandas here because queries number def is missing.
 	#df = pd.DataFrame(data)																				#Will be avoided in the FlaGs code where number queries is defined
-																										   #in preceeding code. 
+																										   #in preceeding code.
 	arrowList = []
 	domainList = []
 	accession_List = []
@@ -2032,14 +2032,14 @@ if args.tree and args.tree_order:  # Queries in postscript file will be presente
 	#y = df[0].nunique()/4.5
 
 
-	
 
-	
+
+
 	# 2. Drawing the plots
 	fig, ax = plt.subplots(1, 2, sharey = 'row', figsize=(x, y), gridspec_kw={'width_ratios': [5, 15]})
-	
-	
-	# 3. Operon (main) file input 
+
+
+	# 3. Operon (main) file input
 	main_file = open(args.out_prefix+'_TreeOrder_operon.tsv','r').read()
 	eg1 = main_file.split("\n\n\n\n")
 	y_level_m = 0
@@ -2062,12 +2062,12 @@ if args.tree and args.tree_order:  # Queries in postscript file will be presente
 				gene_start_list.append(x_gene_start)
 				gene_end_list.append(x_gene_end)
 				# 3a. When genes are to small the arrow shape is distorted because the coordinates are too close to each other.
-				#This makes these genes longer to keep the shape of the arrow. 
+				#This makes these genes longer to keep the shape of the arrow.
 				if dx_gene_length < 100:
 					dx_gene_length = int(items1[1])*2.5
 				else:
 					dx_gene_length = int(items1[1])
-	
+
 				# 3b. Gene diretion and the pointing the arrow head in the correct direction
 				if gene_direction == '-':
 					x_gene_start = int(items1[6])
@@ -2078,29 +2078,29 @@ if args.tree and args.tree_order:  # Queries in postscript file will be presente
 					x_gene_end = int(items1[6])
 					dx_gene_length = dx_gene_length
 
-				# 3c. Drawing the genes as arrows. 
+				# 3c. Drawing the genes as arrows.
 				if abs(dx_gene_length) < 200:
-					arrowList.append(ax[1].arrow(x=x_gene_start, y=y_level_m*0.65, dx=dx_gene_length, dy=0, width=1.1, head_width=1.1, length_includes_head = True, head_length = abs(dx_gene_length)/2, facecolor = colorDict[dom1_name], edgecolor = outliner(colorDict[dom1_name]), alpha=1))               
+					arrowList.append(ax[1].arrow(x=x_gene_start, y=y_level_m*0.65, dx=dx_gene_length, dy=0, width=1.1, head_width=1.1, length_includes_head = True, head_length = abs(dx_gene_length)/2, facecolor = colorDict[dom1_name], edgecolor = outliner(colorDict[dom1_name]), alpha=1))
 				else:
 					arrowList.append(ax[1].arrow(x=x_gene_start, y=y_level_m*0.65, dx=dx_gene_length, dy=0, width=1.1, head_width=1.1, length_includes_head = True, head_length = 150, facecolor = colorDict[dom1_name], edgecolor = outliner(colorDict[dom1_name]), alpha=1))
-				
+
 				# 5. Adding the family number inside the gene/arrow
 				text_x = x_gene_start + (dx_gene_length/2)
-	 
+
 				if dom1_name != 0 and 'pseudogene_' not in id1 and 'RNA_' not in id1 and x_gene_start != 1:
 					ax[1].text(text_x, y_level_m*0.65-0.35, s = dom1_name, horizontalalignment='center', color = 'k', font = {'family' : 'sans-serif','size'   : 8})
 				else:
 					pass
-	
-				# 6. Adding the second plot (left-hand side) with the organism name and accesion nr etc. 
+
+				# 6. Adding the second plot (left-hand side) with the organism name and accesion nr etc.
 				ptnstats = entries1[0].split("\t")
 				org = ptnstats[0][:ptnstats[0].index('|')]+ptnstats[0][ptnstats[0].index('|'):].replace('_',' ')
 				ax[0].text(0.5, y_level_m*0.65-0.35, org, horizontalalignment='center', color = '#000000', font = {'family' : 'sans-serif','size':10})
 				ax[0].set_axis_off()
-				
+
 				row = row+1
-	
-	y_new = ((len(Counter(accession_List).keys()))*0.25)	  
+
+	y_new = ((len(Counter(accession_List).keys()))*0.25)
 	x_new = (max(gene_end_list) - min(gene_start_list))/3000 + 10		 #NOTE! It's maybe better to have just '20.0' instead of 'y_new + 10.0'
 	fig.set_figheight(y_new)
 	fig.set_figwidth(x_new)
